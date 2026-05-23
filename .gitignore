@@ -1,0 +1,50 @@
+# Python virtual environment
+.venv/
+
+# Azure Functions local settings
+address_geocode.py
+test_cbs.py
+local.settings.json
+Workflow.xaml
+Config.xlsx
+
+# Environment files
+.env
+.env.*
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code settings
+.vscode/
+
+# Secrets
+secrets.json
+config.private.json
+*.key
+*.pfx
+*.publishsettings
+
+# Build folders
+bin/
+obj/
+
+# UiPath local/project settings
+.local/
+.objects/
+.project/
+.settings/
+.storage/
+.screenshots/
+
+# UiPath test/output folders
+TestResults/
+Screenshots/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

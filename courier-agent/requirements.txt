@@ -1,0 +1,7 @@
+azure-identity
+aiohttp
+azure-maps-search==1.0.0b2
+azure-maps-route==1.0.0b3
+azure-servicebus>=7.14.2
+azure-data-tables==12.7.0
+azure-core

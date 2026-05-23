@@ -1,0 +1,78 @@
+﻿{
+  "Metadata": {
+    "Id": "a3e5cb11-7334-499c-9d7d-744ec95edbe9",
+    "Kind": "FormIo"
+  },
+  "DesignProperties": {
+    "Title": "Return_orders",
+    "Theme": "Default",
+    "ShowInTaskbar": true,
+    "ShowMargin": true,
+    "CustomStyle": ""
+  },
+  "Data": {
+    "components": [
+      {
+        "theme": "primary",
+        "collapsible": false,
+        "key": "panel",
+        "type": "panel",
+        "label": "Panel",
+        "input": false,
+        "tableView": false,
+        "components": [
+          {
+            "label": "Return Reason",
+            "tableView": true,
+            "key": "returnReason",
+            "type": "textarea",
+            "input": true
+          },
+          {
+            "label": "Order ID",
+            "tableView": true,
+            "key": "orderId",
+            "type": "textfield",
+            "input": true
+          },
+          {
+            "label": "Product ID",
+            "tableView": true,
+            "key": "productId",
+            "type": "textfield",
+            "input": true
+          },
+          {
+            "label": "Pickup Address",
+            "tableView": true,
+            "key": "pickupAddress",
+            "type": "textfield",
+            "input": true
+          },
+          {
+            "label": "Email",
+            "tableView": true,
+            "key": "email",
+            "type": "textfield",
+            "input": true
+          },
+          {
+            "label": "Phone number",
+            "tableView": true,
+            "key": "phoneNumber",
+            "type": "textfield",
+            "input": true
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "label": "Submit",
+        "key": "submit",
+        "disableOnInvalid": true,
+        "input": true,
+        "tableView": false
+      }
+    ]
+  }
+}
