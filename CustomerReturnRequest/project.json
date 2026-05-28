@@ -17,7 +17,7 @@
     "UiPath.System.Activities": "[25.2.1]",
     "UiPath.Testing.Activities": "[24.10.4]",
     "UiPath.UIAutomation.Activities": "[25.2.1-preview]",
-    "UiPath.WebAPI.Activities": "[1.21.1]"
+    "UiPath.WebAPI.Activities": "[2.5.0-preview]"
   },
   "webServices": [],
   "entitiesStores": [],
@@ -46,7 +46,6 @@
     "projectProfile": "Developement",
     "outputType": "Process",
     "libraryOptions": {
-      "includeOriginalXaml": false,
       "privateWorkflows": []
     },
     "processOptions": {

@@ -31,6 +31,15 @@ namespace ReturnAppProj
             _queueName = Environment.GetEnvironmentVariable("SERVICE_BUS_QUEUE");
         }
 
+        [Function("Health")]
+        public async Task<HttpResponseData> Health(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health")] HttpRequestData req)
+        {
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            await response.WriteStringAsync("OK");
+            return response;
+        }
+
         [Function("ReturnRequestHandler")]
         public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,

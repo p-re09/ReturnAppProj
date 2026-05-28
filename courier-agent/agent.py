@@ -1,5 +1,7 @@
 import os, csv, time, json, logging
 from datetime import datetime
+from pathlib import Path
+from dotenv import load_dotenv
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
 from azure.data.tables import TableServiceClient
 from azure.maps.search import MapsSearchClient
@@ -12,13 +14,33 @@ from azure.maps.route.models import RouteMatrixQuery, GeoJsonMultiPoint
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+BASE_DIR = Path(__file__).parent
+READY_FILE = BASE_DIR / "agent_ready.txt"
+STOP_FILE  = BASE_DIR / "agent_stop.txt"
+
 # config
+env_path = Path(__file__).parent / ".env"
+load_dotenv(dotenv_path=env_path)
+
+print("ENV FILE EXISTS:", env_path.exists())
+print("ENV PATH:", env_path)
+print("SB:", os.getenv("SERVICE_BUS_CONNECTION_STRING"))
+
 SB_CONN_STR    = os.getenv("SERVICE_BUS_CONNECTION_STRING")
 SB_QUEUE       = os.getenv("SERVICE_BUS_QUEUE")
 STORAGE_CONN   = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
 TABLE_NAME     = os.getenv("AZURE_TABLE_NAME")
 MAPS_KEY       = os.getenv("AZURE_MAPS_KEY")
 SPEED_FACTOR   = 60
+
+if not SB_CONN_STR:
+    raise RuntimeError("SERVICE_BUS_CONNECTION_STRING missing")
+
+if not MAPS_KEY:
+    raise RuntimeError("AZURE_MAPS_KEY missing")
+
+with open("agent_ready.txt", "w") as f:
+    f.write("READY")
 
 def geocode(address, search_client):
     address = address.replace("Post Office,", "").strip()
@@ -156,29 +178,39 @@ def main():
     table_service = TableServiceClient.from_connection_string(STORAGE_CONN)
     table_client  = table_service.get_table_client(TABLE_NAME)
 
-    with sb_client:
-        receiver = sb_client.get_queue_receiver(queue_name=SB_QUEUE, max_wait_time=10)
-        with receiver:
-            while True:
-                try:
-                    msgs = receiver.receive_messages(max_message_count=1)
-                except ServiceBusError as e:
-                    logger.error("SB receive error, retrying in 5s: %s", e)
-                    time.sleep(5)
-                    continue
+    try:
+        with sb_client:
+            receiver = sb_client.get_queue_receiver(queue_name=SB_QUEUE, max_wait_time=10)
+            with receiver:
+                while True:
+                    if STOP_FILE.exists():
+                        logger.info("Stop signal received. Shutting down.")
+                        break
 
-                if not msgs:
-                    time.sleep(5)
-                    continue
-
-                for msg in msgs:
                     try:
-                        process_message(str(msg), search_client, route_client, table_client)
-                        receiver.complete_message(msg)
-                        print(f"[{datetime.utcnow()}] Completed {msg.message_id}")
-                    except Exception as ex:
-                        logger.error("Processing failed: %s", ex)
-                        receiver.abandon_message(msg)
+                        msgs = receiver.receive_messages(max_message_count=1)
+                    except ServiceBusError as e:
+                        logger.error("SB receive error, retrying in 5s: %s", e)
+                        time.sleep(5)
+                        continue
+
+                    if not msgs:
+                        time.sleep(5)
+                        continue
+
+                    for msg in msgs:
+                        try:
+                            process_message(str(msg), search_client, route_client, table_client)
+                            receiver.complete_message(msg)
+                            print(f"[{datetime.utcnow()}] Completed {msg.message_id}")
+                        except Exception as ex:
+                            logger.error("Processing failed: %s", ex)
+                            receiver.abandon_message(msg)
+    finally:
+        if READY_FILE.exists():
+            READY_FILE.unlink()
+        if STOP_FILE.exists():
+            STOP_FILE.unlink()
 
 if __name__ == "__main__":
     main()
