@@ -8,6 +8,11 @@ local.settings.json
 Workflow.xaml
 Config.xlsx
 
+# UiPath temp/backup workflow files
+~*.xaml
+*~.xaml
+**/~*.xaml
+
 # Environment files
 .env
 .env.*
