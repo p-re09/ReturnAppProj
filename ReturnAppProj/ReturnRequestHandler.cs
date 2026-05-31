@@ -58,25 +58,33 @@ namespace ReturnAppProj
             {
                 var data = await req.ReadFromJsonAsync<ReturnRequest>();
 
+                if (data == null)
+                {
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteStringAsync("Invalid JSON.");
+                    return badResponse;
+                }
+
                 // Save request to Azure Table
                 await _tableClient.UpsertEntityAsync(data);
                 _logger.LogInformation("Saved request to table storage.");
 
-                // Convert object to JSON
-                string jsonMessage = JsonSerializer.Serialize(data);
+                // Only approved requests go to the courier agent
+                if (string.Equals(data.Status, "Approved", StringComparison.OrdinalIgnoreCase))
+                {
+                    string jsonMessage = JsonSerializer.Serialize(data);
 
-                // Create Service Bus client
-                await using var client = new ServiceBusClient(_serviceBusConnectionString);
+                    await using var client = new ServiceBusClient(_serviceBusConnectionString);
+                    ServiceBusSender sender = client.CreateSender(_queueName);
 
-                // Create sender
-                ServiceBusSender sender = client.CreateSender(_queueName);
+                    await sender.SendMessageAsync(new ServiceBusMessage(jsonMessage));
+                    _logger.LogInformation("Message sent to Service Bus queue.");
+                }
+                else
+                {
+                    _logger.LogInformation("Request status was {Status}; not sending to Service Bus.", data.Status);
+                }
 
-                // Send message
-                await sender.SendMessageAsync(new ServiceBusMessage(jsonMessage));
-
-                _logger.LogInformation("Message sent to Service Bus queue.");
-
-                // Process the data as needed
                 var response = req.CreateResponse(HttpStatusCode.OK);
                 await response.WriteStringAsync("Return request recorded.");
                 return response;

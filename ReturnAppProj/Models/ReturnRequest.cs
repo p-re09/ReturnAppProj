@@ -35,6 +35,9 @@ namespace ReturnAppProj.Models
         public string PhoneNumber    { get; set; }
         public string ReturnID       { get; set; }
         public string Status         { get; set; }
+        public string AI_Decision         { get; set; }
+        public double AI_Confidence         { get; set; }
+        public string AI_Reason         { get; set; }
         public DateTimeOffset ReturnDate   { get; set; }
 
         public ReturnRequest() { }

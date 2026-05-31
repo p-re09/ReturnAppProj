@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:uga="clr-namespace:UiPath.GSuite.Activities;assembly=UiPath.GSuite.Activities" xmlns:ugage="clr-namespace:UiPath.GSuite.Activities.Gmail.Enums;assembly=UiPath.GSuite.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:upr="clr-namespace:UiPath.Platform.ResourceHandling;assembly=UiPath.Platform" xmlns:usau="clr-namespace:UiPath.Shared.Activities.Utils;assembly=UiPath.GSuite.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:isactr="http://schemas.uipath.com/workflow/integration-service-activities/isactr" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:sc="clr-namespace:System.ComponentModel;assembly=System.ComponentModel.TypeConverter" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:uga="clr-namespace:UiPath.GSuite.Activities;assembly=UiPath.GSuite.Activities" xmlns:ugage="clr-namespace:UiPath.GSuite.Activities.Gmail.Enums;assembly=UiPath.GSuite.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uiascb="clr-namespace:UiPath.IntegrationService.Activities.SWEntities.C89A9CE526A_generateChatCompletionConsolidated_Create.Bundle;assembly=C89A9CE526A_generate.5bosG1nDiXR1btT612koWp74" xmlns:upr="clr-namespace:UiPath.Platform.ResourceHandling;assembly=UiPath.Platform" xmlns:usau="clr-namespace:UiPath.Shared.Activities.Utils;assembly=UiPath.GSuite.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Transaction item to be processed." Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
     <x:Property sap2010:Annotation.AnnotationText="Dictionary structure to store configuration data of the process (settings, constants and assets)." Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
@@ -38,8 +38,6 @@
       <x:String>System.Xml.Linq</x:String>
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
-      <x:String>GlobalVariablesNamespace</x:String>
-      <x:String>GlobalConstantsNamespace</x:String>
       <x:String>System.Reflection</x:String>
       <x:String>System.Linq.Expressions</x:String>
       <x:String>UiPath.MicrosoftOffice365.Activities.Mail.Models</x:String>
@@ -70,6 +68,18 @@
       <x:String>UiPath.Excel</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
       <x:String>System.Xml.Serialization</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Models.FilterBuilder</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Models</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Helpers.TypeDetailsCustomization</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Activities</x:String>
+      <x:String>UiPath.Platform.Activities</x:String>
+      <x:String>UiPath.Web.Activities.JSON.Models</x:String>
+      <x:String>Newtonsoft.Json.Linq</x:String>
+      <x:String>System.Dynamic</x:String>
+      <x:String>System.Collections.Specialized</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>System.Numerics</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -149,15 +159,25 @@
       <AssemblyReference>System.Data.Common</AssemblyReference>
       <AssemblyReference>System.Data.SqlClient</AssemblyReference>
       <AssemblyReference>Microsoft.Extensions.DependencyModel</AssemblyReference>
+      <AssemblyReference>UiPath.IntegrationService.Activities.Runtime</AssemblyReference>
+      <AssemblyReference>System.Collections.Specialized</AssemblyReference>
+      <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="605.3333333333333,3765.3333333333335" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="597.3333333333333,4722" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="strReturnReason" />
       <Variable x:TypeArguments="x:String" Name="strApproved" />
       <Variable x:TypeArguments="x:String" Name="strCustomerEmail" />
-      <Variable x:TypeArguments="x:Boolean" Name="boolReturnRequestApproved" />
       <Variable x:TypeArguments="x:String" Name="responseContent" />
+      <Variable x:TypeArguments="x:String" Name="strAIPrompt" />
+      <Variable x:TypeArguments="x:String" Name="strAIResponse" />
+      <Variable x:TypeArguments="njl:JObject" Name="jsonAIResponse" />
+      <Variable x:TypeArguments="x:String" Name="strDecision" />
+      <Variable x:TypeArguments="x:Double" Name="dblConfidence" />
+      <Variable x:TypeArguments="x:String" Name="strAIReason" />
+      <Variable x:TypeArguments="x:Boolean" Name="boolKeyWordMatched" />
+      <Variable x:TypeArguments="x:String" Name="strStatus" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -165,9 +185,9 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="488,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started Process&quot;]" />
-    <ui:Comment DisplayName="Comment (placeholder)" sap:VirtualizedContainerService.HintSize="488,88.66666666666667" sap2010:WorkflowViewState.IdRef="Comment_1" Text="//  Invoke steps of the process" />
-    <Assign sap:VirtualizedContainerService.HintSize="488,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="554,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started Process&quot;]" />
+    <ui:Comment DisplayName="Comment (placeholder)" sap:VirtualizedContainerService.HintSize="554,88.66666666666667" sap2010:WorkflowViewState.IdRef="Comment_1" Text="//  Invoke steps of the process" />
+    <Assign sap:VirtualizedContainerService.HintSize="554,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[strReturnReason]</OutArgument>
       </Assign.To>
@@ -175,7 +195,7 @@
         <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("ReturnReason").ToString]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign sap:VirtualizedContainerService.HintSize="488,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_4">
+    <Assign sap:VirtualizedContainerService.HintSize="554,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_4">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[strCustomerEmail]</OutArgument>
       </Assign.To>
@@ -183,38 +203,146 @@
         <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("Email").ToString]</InArgument>
       </Assign.Value>
     </Assign>
-    <If Condition="[strReturnReason.Trim.ToLower.Contains(&quot;damaged&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;defective&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;stolen&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;size&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;missing&quot;) Or&#xA;strReturnReason.Trim.ToLower.Contains(&quot;broken&quot;) Or&#xA;strReturnReason.Trim.ToLower.Contains(&quot;useless&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;faded&quot;) Or&#xA;strReturnReason.Trim.ToLower.Contains(&quot;too small&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;too big&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;mistake&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;doesn't work&quot;)]" sap:VirtualizedContainerService.HintSize="488,1522" sap2010:WorkflowViewState.IdRef="If_1">
-      <If.Then>
-        <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="486,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_2">
-          <Sequence.Variables>
-            <Variable x:TypeArguments="InArgument" Name="[True]" />
-          </Sequence.Variables>
+    <Assign sap:VirtualizedContainerService.HintSize="554,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_22">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[strAIPrompt]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String" xml:space="preserve">["You are an automated returns approval system." &amp; Environment.NewLine &amp; Environment.NewLine &amp; "Return reason:" &amp; Environment.NewLine &amp; strReturnReason &amp; Environment.NewLine &amp; Environment.NewLine &amp; " Rules:" &amp; Environment.NewLine &amp; "- Approve if the reason indicates damage, defects, missing items, wrong item, wrong size, item not working, shipping issues, manufacturing faults, or other legitimate product problems." &amp; Environment.NewLine &amp; "- Reject if the reason is unrelated, abusive, fraudulent, suspicious, or clearly outside a normal return policy." &amp; Environment.NewLine &amp; "- ManualReview if the information is unclear or insufficient." &amp; Environment.NewLine &amp; Environment.NewLine &amp; "Return ONLY valid JSON in exactly this format:" &amp; Environment.NewLine &amp; Environment.NewLine &amp; "{" &amp; Environment.NewLine &amp; "  ""decision"": ""Approve""," &amp; Environment.NewLine &amp; "  ""confidence"": 0.95," &amp; Environment.NewLine &amp; "  ""reason"": ""Short explanation""" &amp; Environment.NewLine &amp; "}" &amp; Environment.NewLine &amp; Environment.NewLine &amp; "Do not return any text outside the JSON."]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <isactr:ConnectorActivity Configuration="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" ConnectionId="f3cdfb83-553e-445a-afac-787c5146ce66" DisplayName="Generate Chat Completion" sap:VirtualizedContainerService.HintSize="554,322.6666666666667" sap2010:WorkflowViewState.IdRef="ConnectorActivity_1" UiPathActivityTypeId="5c6c646f-d321-3248-8fb1-a1829d267bb6">
+      <isactr:ConnectorActivity.FieldObjects>
+        <isactr:FieldObject Name="modelId" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:String">returns-gpt41mini</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="prompt" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:String">[strAIPrompt]</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="knowledge_base" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="vector_db" Type="FieldArgument" />
+        <isactr:FieldObject Name="embedding_model" Type="FieldArgument" />
+        <isactr:FieldObject Name="pineconeApiKey" Type="FieldArgument" />
+        <isactr:FieldObject Name="pineconeEnv" Type="FieldArgument" />
+        <isactr:FieldObject Name="pineconeIndex" Type="FieldArgument" />
+        <isactr:FieldObject Name="_namespace" Type="FieldArgument" />
+        <isactr:FieldObject Name="apiminus_signversion" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:String">2023-10-01-preview</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="instruction" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:String" />
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="max_tokens" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Int32">1920</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="temperature" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Double">1</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="n" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Int64">1</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="top_p" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Double">1</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="stream" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="presence_penalty" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Int32">0</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="frequency_penalty" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Int32">0</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="out_text" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <OutArgument x:TypeArguments="x:String">[strAIResponse]</OutArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="Jit_generateChatCompletionConsolidated" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <OutArgument x:TypeArguments="uiascb:generateChatCompletionConsolidated_Create" />
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+      </isactr:ConnectorActivity.FieldObjects>
+    </isactr:ConnectorActivity>
+    <ui:DeserializeJson x:TypeArguments="njl:JObject" JsonSample="{x:Null}" Settings="{x:Null}" DisplayName="Deserialize JSON" sap:VirtualizedContainerService.HintSize="554,176" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[jsonAIResponse]" JsonString="[strAIResponse]" />
+    <Assign sap:VirtualizedContainerService.HintSize="554,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_10">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[strDecision]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[jsonAIResponse("decision").ToString]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign sap:VirtualizedContainerService.HintSize="554,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_11">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Double">[dblConfidence]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Double">[CDbl(jsonAIResponse("confidence").ToString())]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign sap:VirtualizedContainerService.HintSize="554,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_12">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[strAIReason]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[jsonAIResponse("reason").ToString]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign sap:VirtualizedContainerService.HintSize="554,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_21">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Boolean">[boolKeyWordMatched]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Boolean" xml:space="preserve">[strReturnReason.Trim.ToLower.Contains("damaged") Or strReturnReason.Trim.ToLower.Contains("defective") Or 
+strReturnReason.Trim.ToLower.Contains("stolen") Or 
+strReturnReason.Trim.ToLower.Contains("size") Or 
+strReturnReason.Trim.ToLower.Contains("missing") Or
+strReturnReason.Trim.ToLower.Contains("broken") Or
+strReturnReason.Trim.ToLower.Contains("useless") Or 
+strReturnReason.Trim.ToLower.Contains("faded") Or
+strReturnReason.Trim.ToLower.Contains("too small") Or 
+strReturnReason.Trim.ToLower.Contains("too big") Or 
+strReturnReason.Trim.ToLower.Contains("mistake") Or 
+strReturnReason.Trim.ToLower.Contains("doesn't work")]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:IfElseIfV2 Condition="[strDecision.Trim.ToLower.Contains(&quot;approve&quot;) AndAlso dblConfidence &gt;= 0.8]" DisplayName="Approval Request process" sap:VirtualizedContainerService.HintSize="554,1507.3333333333333" sap2010:WorkflowViewState.IdRef="IfElseIfV2_3">
+      <ui:IfElseIfV2.Else>
+        <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="552,560" sap2010:WorkflowViewState.IdRef="Sequence_23">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Assign sap:VirtualizedContainerService.HintSize="452,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_5">
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:Boolean">[boolReturnRequestApproved]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:Boolean">True</InArgument>
-            </Assign.Value>
-          </Assign>
-        </Sequence>
-      </If.Then>
-      <If.Else>
-        <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="486,1154.6666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
-          <Sequence.Variables>
-            <Variable x:TypeArguments="x:String" Name="strCustomerEmail" />
-          </Sequence.Variables>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <Assign sap:VirtualizedContainerService.HintSize="452,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign sap:VirtualizedContainerService.HintSize="518,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_27">
             <Assign.To>
               <OutArgument x:TypeArguments="x:String">[strCustomerEmail]</OutArgument>
             </Assign.To>
@@ -222,53 +350,76 @@
               <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("Email").ToString]</InArgument>
             </Assign.Value>
           </Assign>
-          <ui:InputDialog Options="{x:Null}" DisplayName="Input Dialog" sap:VirtualizedContainerService.HintSize="452,332.6666666666667" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="Should this request order be approved?" OptionsString="Yes;No" Title="Return Approval Request">
+          <ui:InputDialog Options="{x:Null}" DisplayName="Input Dialog" sap:VirtualizedContainerService.HintSize="518,323.3333333333333" sap2010:WorkflowViewState.IdRef="InputDialog_3" IsPassword="False" Label="What should be the status of this return request?" OptionsString="Approved;Rejected" Title="Return Approval Request">
             <ui:InputDialog.Result>
-              <OutArgument x:TypeArguments="x:String">[strApproved]</OutArgument>
+              <OutArgument x:TypeArguments="x:String">[strStatus]</OutArgument>
             </ui:InputDialog.Result>
           </ui:InputDialog>
-          <If Condition="[strApproved.ToLower.Equals(&quot;yes&quot;)]" sap:VirtualizedContainerService.HintSize="452,585.3333333333334" sap2010:WorkflowViewState.IdRef="If_2">
-            <If.Then>
-              <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="450,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_4">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <Assign sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_7">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="x:Boolean">[boolReturnRequestApproved]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="x:Boolean">True</InArgument>
-                  </Assign.Value>
-                </Assign>
-              </Sequence>
-            </If.Then>
-            <If.Else>
-              <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="450,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_5">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <Assign sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_8">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="x:Boolean">[boolReturnRequestApproved]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="x:Boolean">False</InArgument>
-                  </Assign.Value>
-                </Assign>
-              </Sequence>
-            </If.Else>
-          </If>
         </Sequence>
-      </If.Else>
-    </If>
-    <If Condition="[boolReturnRequestApproved = True]" sap:VirtualizedContainerService.HintSize="488,1524.6666666666667" sap2010:WorkflowViewState.IdRef="If_3">
+      </ui:IfElseIfV2.Else>
+      <ui:IfElseIfV2.ElseIfs>
+        <sc:BindingList x:TypeArguments="ui:IfElseIfBlock" AllowEdit="True" AllowNew="True" AllowRemove="True" RaiseListChangedEvents="True">
+          <ui:IfElseIfBlock BlockType="ElseIf" Condition="[boolKeyWordMatched]" DisplayName="If else if block" sap2010:WorkflowViewState.IdRef="IfElseIfBlock_5">
+            <ui:IfElseIfBlock.Then>
+              <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="552,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_24">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign sap:VirtualizedContainerService.HintSize="518,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_29">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[strStatus]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">["Approved"]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </ui:IfElseIfBlock.Then>
+          </ui:IfElseIfBlock>
+          <ui:IfElseIfBlock BlockType="ElseIf" Condition="[strDecision.Trim.ToLower.Contains(&quot;reject&quot;) And dblConfidence &gt;= 0.8]" DisplayName="If else if block" sap2010:WorkflowViewState.IdRef="IfElseIfBlock_6">
+            <ui:IfElseIfBlock.Then>
+              <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="552,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_25">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign sap:VirtualizedContainerService.HintSize="518,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_26">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[strStatus]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">["Rejected"]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </ui:IfElseIfBlock.Then>
+          </ui:IfElseIfBlock>
+        </sc:BindingList>
+      </ui:IfElseIfV2.ElseIfs>
+      <ui:IfElseIfV2.Then>
+        <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="552,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_22">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Assign sap:VirtualizedContainerService.HintSize="518,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_30">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[strStatus]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">["Approved"]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+      </ui:IfElseIfV2.Then>
+    </ui:IfElseIfV2>
+    <If Condition="[strStatus.Trim.ToLower.Contains(&quot;approved&quot;)]" sap:VirtualizedContainerService.HintSize="554,1114" sap2010:WorkflowViewState.IdRef="If_3">
       <If.Then>
-        <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="450,512.6666666666666" sap2010:WorkflowViewState.IdRef="Sequence_6">
+        <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="450,331.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_6">
           <Sequence.Variables>
             <Variable x:TypeArguments="sd:DataTable" Name="dt_ReturnOrders" />
           </Sequence.Variables>
@@ -277,8 +428,7 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="416,124" sap2010:WorkflowViewState.IdRef="Delay_1" />
-          <ui:HttpClient ClientCertificate="{x:Null}" ClientCertificatePassword="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" StatusCode="{x:Null}" Username="{x:Null}" AcceptFormat="ANY" AuthenticationType="None" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(New Dictionary(Of String, Object) From {&#xA; {&quot;PartitionKey&quot;, in_TransactionItem.SpecificContent(&quot;CustomerId&quot;).ToString()},&#xA; {&quot;RowKey&quot;, in_TransactionItem.SpecificContent(&quot;RowKey&quot;).ToString()},&#xA; {&quot;ReturnReason&quot;, in_TransactionItem.SpecificContent(&quot;ReturnReason&quot;).ToString()},&#xA; {&quot;OrderId&quot;, in_TransactionItem.SpecificContent(&quot;OrderId&quot;).ToString()},&#xA; {&quot;ProductId&quot;, in_TransactionItem.SpecificContent(&quot;ProductId&quot;).ToString()},&#xA; {&quot;PickupAddress&quot;, in_TransactionItem.SpecificContent(&quot;PickupAddress&quot;).ToString()},&#xA; {&quot;Email&quot;, in_TransactionItem.SpecificContent(&quot;Email&quot;).ToString()},&#xA; {&quot;PhoneNumber&quot;, in_TransactionItem.SpecificContent(&quot;PhoneNumber&quot;).ToString()},&#xA; {&quot;ReturnID&quot;, in_TransactionItem.SpecificContent(&quot;ReturnId&quot;).ToString()},&#xA; {&quot;Status&quot;, &quot;Approved&quot;},&#xA; {&quot;ReturnDate&quot;, in_TransactionItem.SpecificContent(&quot;ReturnDate&quot;).ToString()}&#xA;})]" BodyFormat="application/xml" DisplayName="HTTP Request" EnableSSLVerification="True" EndPoint="http://localhost:7071/api/ReturnRequestHandler" sap:VirtualizedContainerService.HintSize="416,104" sap2010:WorkflowViewState.IdRef="HttpClient_8" Method="POST" Result="[responseContent]" TimeoutMS="6000">
+          <ui:HttpClient ClientCertificate="{x:Null}" ClientCertificatePassword="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" StatusCode="{x:Null}" Username="{x:Null}" AcceptFormat="ANY" AuthenticationType="None" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(New Dictionary(Of String, Object) From {&#xD;&#xA; {&quot;PartitionKey&quot;, in_TransactionItem.SpecificContent(&quot;CustomerId&quot;).ToString()},&#xD;&#xA; {&quot;RowKey&quot;, in_TransactionItem.SpecificContent(&quot;RowKey&quot;).ToString()},&#xD;&#xA; {&quot;ReturnReason&quot;, in_TransactionItem.SpecificContent(&quot;ReturnReason&quot;).ToString()},&#xD;&#xA; {&quot;OrderId&quot;, in_TransactionItem.SpecificContent(&quot;OrderId&quot;).ToString()},&#xD;&#xA; {&quot;ProductId&quot;, in_TransactionItem.SpecificContent(&quot;ProductId&quot;).ToString()},&#xD;&#xA; {&quot;PickupAddress&quot;, in_TransactionItem.SpecificContent(&quot;PickupAddress&quot;).ToString()},&#xD;&#xA; {&quot;Email&quot;, in_TransactionItem.SpecificContent(&quot;Email&quot;).ToString()},&#xD;&#xA; {&quot;PhoneNumber&quot;, in_TransactionItem.SpecificContent(&quot;PhoneNumber&quot;).ToString()},&#xD;&#xA; {&quot;ReturnID&quot;, in_TransactionItem.SpecificContent(&quot;ReturnId&quot;).ToString()},&#xD;&#xA; {&quot;Status&quot;, strStatus},&#xD;&#xA; {&quot;ReturnDate&quot;, in_TransactionItem.SpecificContent(&quot;ReturnDate&quot;).ToString()},&#xD;&#xA; {&quot;AI_Decision&quot;, strDecision},&#xD;&#xA; {&quot;AI_Confidence&quot;, dblConfidence},&#xD;&#xA; {&quot;AI_Reason&quot;, strAIReason}&#xD;&#xA;})]" BodyFormat="application/xml" DisplayName="HTTP Request" EnableSSLVerification="True" EndPoint="http://localhost:7071/api/ReturnRequestHandler" sap:VirtualizedContainerService.HintSize="416,104" sap2010:WorkflowViewState.IdRef="HttpClient_8" Method="POST" Result="[responseContent]" TimeoutMS="6000">
             <ui:HttpClient.Attachments>
               <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.Attachments>
@@ -298,175 +448,17 @@
               <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.UrlSegments>
           </ui:HttpClient>
-          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="416,57.333333333333336" sap2010:WorkflowViewState.IdRef="CommentOut_7">
-            <ui:CommentOut.Body>
-              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="449.6,248" sap2010:WorkflowViewState.IdRef="Sequence_14">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:InvokeCode ContinueOnError="{x:Null}" Code="' Build dictionary from inputs&#xA;Dim payload As New Dictionary(Of String, Object) From {&#xA;&#x9;{&quot;PartitionKey&quot;, CustomerId},&#xA;&#x9;{&quot;RowKey&quot;, RowKey},&#xA;&#x9;{&quot;ReturnReason&quot;, ReturnReason},&#xA;&#x9;{&quot;OrderId&quot;, OrderId},&#xA;&#x9;{&quot;ProductId&quot;, ProductId},&#xA;&#x9;{&quot;PickupAddress&quot;, PickupAddress},&#xA;&#x9;{&quot;Email&quot;, Email},&#xA;&#x9;{&quot;PhoneNumber&quot;, PhoneNumber},&#xA;&#x9;{&quot;ReturnID&quot;, ReturnId},&#xA;&#x9;{&quot;Status&quot;, &quot;Approved&quot;},&#xA;&#x9;{&quot;ReturnDate&quot;, ReturnDate}&#xA;}&#xA;&#xA;Dim jsonBody As String = Newtonsoft.Json.JsonConvert.SerializeObject(payload)&#xA;&#xA;' 3) POST to your function endpoint&#xA;Using client As New System.Net.WebClient()&#xA;    client.Headers(System.Net.HttpRequestHeader.ContentType) = &quot;application/json&quot;&#xA;    ' UploadString returns the response body&#xA;    Dim response As String = client.UploadString(FunctionUrl, &quot;POST&quot;, jsonBody)&#xA;    RawResponse = response&#xA;End Using&#xA;" DisplayName="Invoke Code" sap:VirtualizedContainerService.HintSize="416,188" sap2010:WorkflowViewState.IdRef="InvokeCode_2">
-                  <ui:InvokeCode.Arguments>
-                    <InArgument x:TypeArguments="x:String" x:Key="CustomerId">[in_TransactionItem.SpecificContent("CustomerId").ToString()]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="ProductId">[in_TransactionItem.SpecificContent("ProductId").ToString()]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="ReturnId">[in_TransactionItem.SpecificContent("ReturnId").ToString()]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="OrderId">[in_TransactionItem.SpecificContent("OrderId").ToString()]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="Email">[in_TransactionItem.SpecificContent("Email").ToString()]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="PhoneNumber">[in_TransactionItem.SpecificContent("PhoneNumber").ToString()]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="PickupAddress">[in_TransactionItem.SpecificContent("PickupAddress").ToString()]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="RowKey">[in_TransactionItem.SpecificContent("RowKey").ToString()]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="ReturnDate">[in_TransactionItem.SpecificContent("ReturnDate").ToString()]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="ReturnReason">[in_TransactionItem.SpecificContent("ReturnReason").ToString()]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="FunctionUrl">http://localhost:7071/api/ReturnRequestHandler</InArgument>
-                    <OutArgument x:TypeArguments="x:String" x:Key="RawResponse">[responseContent]</OutArgument>
-                  </ui:InvokeCode.Arguments>
-                </ui:InvokeCode>
-              </Sequence>
-            </ui:CommentOut.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:CommentOut>
           <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_2" Message="[responseContent]" />
         </Sequence>
       </If.Then>
       <If.Else>
-        <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="450,881.3333333333334" sap2010:WorkflowViewState.IdRef="Sequence_7">
+        <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="450,652" sap2010:WorkflowViewState.IdRef="Sequence_7">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="416,57.333333333333336" sap2010:WorkflowViewState.IdRef="CommentOut_4">
-            <ui:CommentOut.Body>
-              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="450,154.66666666666666" sap2010:WorkflowViewState.IdRef="Sequence_11">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:HttpClient ClientCertificate="{x:Null}" ClientCertificatePassword="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" StatusCode="{x:Null}" Username="{x:Null}" AcceptFormat="ANY" AuthenticationType="None" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(New Dictionary(Of String, Object) From {&#xA; {&quot;PartitionKey&quot;, in_TransactionItem.SpecificContent(&quot;CustomerId&quot;).ToString()},&#xA; {&quot;RowKey&quot;, in_TransactionItem.SpecificContent(&quot;RowKey&quot;).ToString()},&#xA; {&quot;ReturnReason&quot;, in_TransactionItem.SpecificContent(&quot;ReturnReason&quot;).ToString()},&#xA; {&quot;OrderId&quot;, in_TransactionItem.SpecificContent(&quot;OrderId&quot;).ToString()},&#xA; {&quot;ProductId&quot;, in_TransactionItem.SpecificContent(&quot;ProductId&quot;).ToString()},&#xA; {&quot;PickupAddress&quot;, in_TransactionItem.SpecificContent(&quot;PickupAddress&quot;).ToString()},&#xA; {&quot;Email&quot;, in_TransactionItem.SpecificContent(&quot;Email&quot;).ToString()},&#xA; {&quot;PhoneNumber&quot;, in_TransactionItem.SpecificContent(&quot;PhoneNumber&quot;).ToString()},&#xA; {&quot;ReturnID&quot;, in_TransactionItem.SpecificContent(&quot;ReturnId&quot;).ToString()},&#xA; {&quot;Status&quot;, &quot;Approved&quot;},&#xA; {&quot;ReturnDate&quot;, in_TransactionItem.SpecificContent(&quot;ReturnDate&quot;).ToString()}&#xA;})]" BodyFormat="application/xml" DisplayName="HTTP Request" EnableSSLVerification="True" EndPoint="http://localhost:7071/api/ReturnRequestHandler" sap:VirtualizedContainerService.HintSize="416,94.66666666666667" sap2010:WorkflowViewState.IdRef="HttpClient_6" Method="MERGE" Result="[responseContent]" TimeoutMS="6000">
-                  <ui:HttpClient.Attachments>
-                    <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-                  </ui:HttpClient.Attachments>
-                  <ui:HttpClient.Cookies>
-                    <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-                  </ui:HttpClient.Cookies>
-                  <ui:HttpClient.Headers>
-                    <InArgument x:TypeArguments="x:String" x:Key="Content-Type">application/json</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="Accept">application/json</InArgument>
-                  </ui:HttpClient.Headers>
-                  <ui:HttpClient.Parameters>
-                    <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-                  </ui:HttpClient.Parameters>
-                  <ui:HttpClient.UrlSegments>
-                    <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-                  </ui:HttpClient.UrlSegments>
-                </ui:HttpClient>
-              </Sequence>
-            </ui:CommentOut.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:CommentOut>
-          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="416,57.333333333333336" sap2010:WorkflowViewState.IdRef="CommentOut_6">
-            <ui:CommentOut.Body>
-              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="449.6,171.2" sap2010:WorkflowViewState.IdRef="Sequence_13">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:ReadRange WorkbookPathResource="{x:Null}" AddHeaders="True" DataTable="[dt_ReturnOrders]" DisplayName="Read Range Workbook" sap:VirtualizedContainerService.HintSize="416,111.2" sap2010:WorkflowViewState.IdRef="ReadRange_1" Range="A1" SheetName="Sheet1" WorkbookPath="C:\Users\Precious\Desktop\Diss\return_orders.xlsx">
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                </ui:ReadRange>
-              </Sequence>
-            </ui:CommentOut.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:CommentOut>
-          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="416,57.333333333333336" sap2010:WorkflowViewState.IdRef="CommentOut_5">
-            <ui:CommentOut.Body>
-              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="449.6,248" sap2010:WorkflowViewState.IdRef="Sequence_12">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:InvokeCode ContinueOnError="{x:Null}" Code="Dim newRow As DataRow = in_dtReturnOrders.NewRow()&#xA;newRow(&quot;ReturnId&quot;)            = in_ReturnId&#xA;newRow(&quot;CustomerId&quot;)       = in_strCustomerId&#xA;newRow(&quot;OrderId&quot;)             = in_OrderId&#xA;newRow(&quot;ProductId&quot;)          = in_ProductId&#xA;newRow(&quot;ReturnReason&quot;)   = in_ReturnReason&#xA;newRow(&quot;ReturnDate&quot;)       = DateTime.UtcNow.ToString(&quot;yyyyMMddHHmmssfff&quot;)&#xA;newRow(&quot;PickupAddress&quot;) = in_PickupAddress&#xA;newRow(&quot;Email&quot;) = in_Email&#xA;newRow(&quot;PhoneNumber&quot;) = in_PhoneNumber&#xA;newRow(&quot;Status&quot;) = &quot;Completed&quot;&#xA;in_dtReturnOrders.Rows.Add(newRow)&#xA;" DisplayName="Invoke Code" sap:VirtualizedContainerService.HintSize="416,188" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
-                  <ui:InvokeCode.Arguments>
-                    <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dtReturnOrders">[dt_ReturnOrders]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_ReturnId">[in_TransactionItem.SpecificContent("ReturnId").ToString]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_strCustomerId">[in_strCustomerId]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_OrderId">[in_TransactionItem.SpecificContent("OrderId").ToString]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_ProductId">[in_TransactionItem.SpecificContent("ProductId").ToString]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_ReturnReason">[in_TransactionItem.SpecificContent("ReturnReason").ToString]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_PickupAddress">[in_TransactionItem.SpecificContent("PickupAddress").ToString]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_PhoneNumber">[in_TransactionItem.SpecificContent("PhoneNumber").ToString]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_Email">[in_TransactionItem.SpecificContent("Email").ToString]</InArgument>
-                  </ui:InvokeCode.Arguments>
-                </ui:InvokeCode>
-              </Sequence>
-            </ui:CommentOut.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:CommentOut>
-          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="416,57.333333333333336" sap2010:WorkflowViewState.IdRef="CommentOut_1">
-            <ui:CommentOut.Body>
-              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="449.6,154.4" sap2010:WorkflowViewState.IdRef="Sequence_8">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:HttpClient ClientCertificate="{x:Null}" ClientCertificatePassword="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" StatusCode="{x:Null}" Username="{x:Null}" AcceptFormat="ANY" AuthenticationType="None" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(New Dictionary(Of String, Object) From {&#xA; {&quot;PartitionKey&quot;, in_strCustomerID},&#xA; {&quot;RowKey&quot;, in_strRowKey},&#xA; {&quot;ReturnReason&quot;, in_TransactionItem.SpecificContent(&quot;ReturnReason&quot;).ToString()},&#xA; {&quot;OrderId&quot;, in_TransactionItem.SpecificContent(&quot;OrderId&quot;).ToString()},&#xA; {&quot;ProductId&quot;, in_TransactionItem.SpecificContent(&quot;ProductId&quot;).ToString()},&#xA; {&quot;PickupAddress&quot;, in_TransactionItem.SpecificContent(&quot;PickupAddress&quot;).ToString()},&#xA; {&quot;Email&quot;, in_TransactionItem.SpecificContent(&quot;Email&quot;).ToString()},&#xA; {&quot;PhoneNumber&quot;, in_TransactionItem.SpecificContent(&quot;PhoneNumber&quot;).ToString()},&#xA; {&quot;ReturnID&quot;, in_TransactionItem.SpecificContent(&quot;ReturnId&quot;).ToString()},&#xA; {&quot;Status&quot;, &quot;Rejected&quot;},&#xA; {&quot;ReturnDate&quot;, in_TransactionItem.SpecificContent(&quot;ReturnDate&quot;).ToString()}&#xA;})]" BodyFormat="application/xml" DisplayName="HTTP Request" EnableSSLVerification="True" EndPoint="http://localhost:7071/api/ReturnRequestHandler" sap:VirtualizedContainerService.HintSize="416,94.4" sap2010:WorkflowViewState.IdRef="HttpClient_3" Method="POST" Result="[responseContent]" TimeoutMS="6000">
-                  <ui:HttpClient.Attachments>
-                    <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-                  </ui:HttpClient.Attachments>
-                  <ui:HttpClient.Cookies>
-                    <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-                  </ui:HttpClient.Cookies>
-                  <ui:HttpClient.Headers>
-                    <InArgument x:TypeArguments="x:String" x:Key="Content-Type">application/json</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="Accept">application/json</InArgument>
-                  </ui:HttpClient.Headers>
-                  <ui:HttpClient.Parameters>
-                    <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-                  </ui:HttpClient.Parameters>
-                  <ui:HttpClient.UrlSegments>
-                    <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-                  </ui:HttpClient.UrlSegments>
-                </ui:HttpClient>
-              </Sequence>
-            </ui:CommentOut.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:CommentOut>
-          <ui:HttpClient ClientCertificate="{x:Null}" ClientCertificatePassword="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" StatusCode="{x:Null}" Username="{x:Null}" AcceptFormat="ANY" AuthenticationType="None" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(New Dictionary(Of String, Object) From {&#xA; {&quot;PartitionKey&quot;, in_TransactionItem.SpecificContent(&quot;CustomerId&quot;).ToString()},&#xA; {&quot;RowKey&quot;, in_TransactionItem.SpecificContent(&quot;RowKey&quot;).ToString()},&#xA; {&quot;ReturnReason&quot;, in_TransactionItem.SpecificContent(&quot;ReturnReason&quot;).ToString()},&#xA; {&quot;OrderId&quot;, in_TransactionItem.SpecificContent(&quot;OrderId&quot;).ToString()},&#xA; {&quot;ProductId&quot;, in_TransactionItem.SpecificContent(&quot;ProductId&quot;).ToString()},&#xA; {&quot;PickupAddress&quot;, in_TransactionItem.SpecificContent(&quot;PickupAddress&quot;).ToString()},&#xA; {&quot;Email&quot;, in_TransactionItem.SpecificContent(&quot;Email&quot;).ToString()},&#xA; {&quot;PhoneNumber&quot;, in_TransactionItem.SpecificContent(&quot;PhoneNumber&quot;).ToString()},&#xA; {&quot;ReturnID&quot;, in_TransactionItem.SpecificContent(&quot;ReturnId&quot;).ToString()},&#xA; {&quot;Status&quot;, &quot;Rejected&quot;},&#xA; {&quot;ReturnDate&quot;, in_TransactionItem.SpecificContent(&quot;ReturnDate&quot;).ToString()}&#xA;})]" BodyFormat="application/xml" DisplayName="HTTP Request" EnableSSLVerification="True" EndPoint="http://localhost:7071/api/ReturnRequestHandler" sap:VirtualizedContainerService.HintSize="416,104" sap2010:WorkflowViewState.IdRef="HttpClient_4" Method="POST" Result="[responseContent]" TimeoutMS="6000">
+          <ui:HttpClient ClientCertificate="{x:Null}" ClientCertificatePassword="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" StatusCode="{x:Null}" Username="{x:Null}" AcceptFormat="ANY" AuthenticationType="None" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(New Dictionary(Of String, Object) From {&#xD;&#xA; {&quot;PartitionKey&quot;, in_TransactionItem.SpecificContent(&quot;CustomerId&quot;).ToString()},&#xD;&#xA; {&quot;RowKey&quot;, in_TransactionItem.SpecificContent(&quot;RowKey&quot;).ToString()},&#xD;&#xA; {&quot;ReturnReason&quot;, in_TransactionItem.SpecificContent(&quot;ReturnReason&quot;).ToString()},&#xD;&#xA; {&quot;OrderId&quot;, in_TransactionItem.SpecificContent(&quot;OrderId&quot;).ToString()},&#xD;&#xA; {&quot;ProductId&quot;, in_TransactionItem.SpecificContent(&quot;ProductId&quot;).ToString()},&#xD;&#xA; {&quot;PickupAddress&quot;, in_TransactionItem.SpecificContent(&quot;PickupAddress&quot;).ToString()},&#xD;&#xA; {&quot;Email&quot;, in_TransactionItem.SpecificContent(&quot;Email&quot;).ToString()},&#xD;&#xA; {&quot;PhoneNumber&quot;, in_TransactionItem.SpecificContent(&quot;PhoneNumber&quot;).ToString()},&#xD;&#xA; {&quot;ReturnID&quot;, in_TransactionItem.SpecificContent(&quot;ReturnId&quot;).ToString()},&#xD;&#xA; {&quot;Status&quot;, strStatus},&#xD;&#xA; {&quot;ReturnDate&quot;, in_TransactionItem.SpecificContent(&quot;ReturnDate&quot;).ToString()},&#xD;&#xA; {&quot;AI_Decision&quot;, strDecision},&#xD;&#xA; {&quot;AI_Confidence&quot;, dblConfidence},&#xD;&#xA; {&quot;AI_Reason&quot;, strAIReason}&#xD;&#xA;})]" BodyFormat="application/xml" DisplayName="HTTP Request" EnableSSLVerification="True" EndPoint="http://localhost:7071/api/ReturnRequestHandler" sap:VirtualizedContainerService.HintSize="416,104" sap2010:WorkflowViewState.IdRef="HttpClient_4" Method="POST" Result="[responseContent]" TimeoutMS="6000">
             <ui:HttpClient.Attachments>
               <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.Attachments>
