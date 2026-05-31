@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:isactr="http://schemas.uipath.com/workflow/integration-service-activities/isactr" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:uga="clr-namespace:UiPath.GSuite.Activities;assembly=UiPath.GSuite.Activities" xmlns:ugage="clr-namespace:UiPath.GSuite.Activities.Gmail.Enums;assembly=UiPath.GSuite.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uiascb="clr-namespace:UiPath.IntegrationService.Activities.SWEntities.C89A9CE526A_generateChatCompletionConsolidated_Create.Bundle;assembly=C89A9CE526A_generate.5bosG1nDiXR1btT612koWp74" xmlns:upr="clr-namespace:UiPath.Platform.ResourceHandling;assembly=UiPath.Platform" xmlns:usau="clr-namespace:UiPath.Shared.Activities.Utils;assembly=UiPath.GSuite.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:uga="clr-namespace:UiPath.GSuite.Activities;assembly=UiPath.GSuite.Activities" xmlns:ugage="clr-namespace:UiPath.GSuite.Activities.Gmail.Enums;assembly=UiPath.GSuite.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:upr="clr-namespace:UiPath.Platform.ResourceHandling;assembly=UiPath.Platform" xmlns:usau="clr-namespace:UiPath.Shared.Activities.Utils;assembly=UiPath.GSuite.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Transaction item to be processed." Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
     <x:Property sap2010:Annotation.AnnotationText="Dictionary structure to store configuration data of the process (settings, constants and assets)." Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
@@ -70,12 +70,6 @@
       <x:String>UiPath.Excel</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
       <x:String>System.Xml.Serialization</x:String>
-      <x:String>UiPath.IntegrationService.Activities.Runtime.Models.FilterBuilder</x:String>
-      <x:String>UiPath.IntegrationService.Activities.Runtime.Models</x:String>
-      <x:String>UiPath.IntegrationService.Activities.Runtime.Helpers.TypeDetailsCustomization</x:String>
-      <x:String>UiPath.IntegrationService.Activities.Runtime.Activities</x:String>
-      <x:String>UiPath.Platform.Activities</x:String>
-      <x:String>UiPath.IntegrationService.Activities.SWEntities.C89A9CE526A_generateChatCompletionConsolidated_Create.Bundle</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -155,19 +149,15 @@
       <AssemblyReference>System.Data.Common</AssemblyReference>
       <AssemblyReference>System.Data.SqlClient</AssemblyReference>
       <AssemblyReference>Microsoft.Extensions.DependencyModel</AssemblyReference>
-      <AssemblyReference>UiPath.IntegrationService.Activities.Runtime</AssemblyReference>
-      <AssemblyReference>C89A9CE526A_generate.5bosG1nDiXR1btT612koWp74</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="600,4264.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="605.3333333333333,3765.3333333333335" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="strReturnReason" />
       <Variable x:TypeArguments="x:String" Name="strApproved" />
       <Variable x:TypeArguments="x:String" Name="strCustomerEmail" />
       <Variable x:TypeArguments="x:Boolean" Name="boolReturnRequestApproved" />
       <Variable x:TypeArguments="x:String" Name="responseContent" />
-      <Variable x:TypeArguments="x:String" Name="strAIPrompt" />
-      <Variable x:TypeArguments="x:String" Name="strAIResponse" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -193,90 +183,6 @@
         <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("Email").ToString]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign sap:VirtualizedContainerService.HintSize="488,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_9">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[strAIPrompt]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String" xml:space="preserve">["You are an automated returns approval system." &amp; Environment.NewLine &amp; Environment.NewLine &amp; "Return reason:" &amp; Environment.NewLine &amp; strReturnReason &amp; Environment.NewLine &amp; Environment.NewLine &amp; " Rules:" &amp; Environment.NewLine &amp; "- Approve if the reason indicates damage, defects, missing items, wrong item, wrong size, item not working, shipping issues, manufacturing faults, or other legitimate product problems." &amp; Environment.NewLine &amp; "- Reject if the reason is unrelated, abusive, fraudulent, suspicious, or clearly outside a normal return policy." &amp; Environment.NewLine &amp; "- ManualReview if the information is unclear or insufficient." &amp; Environment.NewLine &amp; Environment.NewLine &amp; "Return ONLY valid JSON in exactly this format:" &amp; Environment.NewLine &amp; Environment.NewLine &amp; "{" &amp; Environment.NewLine &amp; "  ""decision"": ""Approve""," &amp; Environment.NewLine &amp; "  ""confidence"": 0.95," &amp; Environment.NewLine &amp; "  ""reason"": ""Short explanation""" &amp; Environment.NewLine &amp; "}" &amp; Environment.NewLine &amp; Environment.NewLine &amp; "Do not return any text outside the JSON."]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <isactr:ConnectorActivity Configuration="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" ConnectionId="f3cdfb83-553e-445a-afac-787c5146ce66" DisplayName="Generate Chat Completion" sap:VirtualizedContainerService.HintSize="488,322.6666666666667" sap2010:WorkflowViewState.IdRef="ConnectorActivity_1" UiPathActivityTypeId="5c6c646f-d321-3248-8fb1-a1829d267bb6">
-      <isactr:ConnectorActivity.FieldObjects>
-        <isactr:FieldObject Name="modelId" Type="FieldArgument" />
-        <isactr:FieldObject Name="prompt" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <InArgument x:TypeArguments="x:String">[strAIPrompt]</InArgument>
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="knowledge_base" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <InArgument x:TypeArguments="x:Boolean">False</InArgument>
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="vector_db" Type="FieldArgument" />
-        <isactr:FieldObject Name="embedding_model" Type="FieldArgument" />
-        <isactr:FieldObject Name="pineconeApiKey" Type="FieldArgument" />
-        <isactr:FieldObject Name="pineconeEnv" Type="FieldArgument" />
-        <isactr:FieldObject Name="pineconeIndex" Type="FieldArgument" />
-        <isactr:FieldObject Name="_namespace" Type="FieldArgument" />
-        <isactr:FieldObject Name="apiminus_signversion" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <InArgument x:TypeArguments="x:String">2023-10-01-preview</InArgument>
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="instruction" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <InArgument x:TypeArguments="x:String" />
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="max_tokens" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <InArgument x:TypeArguments="x:Int32">1920</InArgument>
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="temperature" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <InArgument x:TypeArguments="x:Double">1</InArgument>
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="n" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <InArgument x:TypeArguments="x:Int64">1</InArgument>
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="top_p" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <InArgument x:TypeArguments="x:Double">1</InArgument>
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="stream" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <InArgument x:TypeArguments="x:Boolean">False</InArgument>
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="presence_penalty" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <InArgument x:TypeArguments="x:Int32">0</InArgument>
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="frequency_penalty" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <InArgument x:TypeArguments="x:Int32">0</InArgument>
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="out_text" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <OutArgument x:TypeArguments="x:String">[strAIResponse]</OutArgument>
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-        <isactr:FieldObject Name="Jit_generateChatCompletionConsolidated" Type="FieldArgument">
-          <isactr:FieldObject.Value>
-            <OutArgument x:TypeArguments="uiascb:generateChatCompletionConsolidated_Create" />
-          </isactr:FieldObject.Value>
-        </isactr:FieldObject>
-      </isactr:ConnectorActivity.FieldObjects>
-    </isactr:ConnectorActivity>
     <If Condition="[strReturnReason.Trim.ToLower.Contains(&quot;damaged&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;defective&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;stolen&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;size&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;missing&quot;) Or&#xA;strReturnReason.Trim.ToLower.Contains(&quot;broken&quot;) Or&#xA;strReturnReason.Trim.ToLower.Contains(&quot;useless&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;faded&quot;) Or&#xA;strReturnReason.Trim.ToLower.Contains(&quot;too small&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;too big&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;mistake&quot;) Or &#xA;strReturnReason.Trim.ToLower.Contains(&quot;doesn't work&quot;)]" sap:VirtualizedContainerService.HintSize="488,1522" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
         <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="486,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_2">
